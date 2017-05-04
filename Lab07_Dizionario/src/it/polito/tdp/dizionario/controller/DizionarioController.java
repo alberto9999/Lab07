@@ -3,6 +3,7 @@ package it.polito.tdp.dizionario.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.dizionario.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +14,8 @@ public class DizionarioController {
 
 	@FXML
 	private ResourceBundle resources;
+	@FXML
+	private Button btnTrovaTuttiVicini;
 	@FXML
 	private URL location;
 	@FXML
@@ -30,25 +33,46 @@ public class DizionarioController {
 
 	@FXML
 	void doReset(ActionEvent event) {
-		txtResult.setText("Reset!");
+		txtResult.setText("");
+		inputParola.setText("");
+		inputNumeroLettere.setText("");
 	}
 
 	@FXML
-	void doGeneraGrafo(ActionEvent event) {
-
-		try {
-			txtResult.setText("Controller -- TODO!");
+	void doGeneraGrafo(ActionEvent event) {	
+       try {
+    	   int numeroLettere=Integer.parseInt(inputNumeroLettere.getText());
+    	   txtResult.appendText("GRAFO CREATO. PAROLE DI LUNGHEZZA "+numeroLettere+" TROVATE:\n");
+    	   for(String s: model.createGraph(numeroLettere)){
+			txtResult.appendText(s+"\n");}
 			
 		} catch (RuntimeException re) {
 			txtResult.setText(re.getMessage());
+			txtResult.appendText("\nINSERIRE LA LUNGHEZZA DELLE PAROLE");
 		}
-	}
+		}
+	
+	@FXML
+	void doTrovaTuttiVicini(ActionEvent event){
+		String word= inputParola.getText();
+		try {
+			txtResult.setText("TUTTE LE PAROLE VICINE A "+word+" TROVATE:\n");
+			for(String s: model.trovaTuttiVicini(word)){
+			txtResult.appendText(s+"\n");
+			}
 
+		} catch (RuntimeException re) {
+			txtResult.setText(re.getMessage());
+		}	
+	}
+	
+	
 	@FXML
 	void doTrovaGradoMax(ActionEvent event) {
 		
 		try {
-			txtResult.setText("Controller -- TODO!");
+			
+			txtResult.appendText(model.findMaxDegree());
 
 		} catch (RuntimeException re) {
 			txtResult.setText(re.getMessage());
@@ -57,9 +81,12 @@ public class DizionarioController {
 
 	@FXML
 	void doTrovaVicini(ActionEvent event) {
+		String word= inputParola.getText();
 		
 		try {
-			txtResult.setText("Controller -- TODO!");
+			txtResult.appendText("PAROLE VICINE A "+word+" TROVATE:\n");
+			for(String s : model.displayNeighbours(word)){
+			txtResult.appendText(s+"\n");}
 
 		} catch (RuntimeException re) {
 			txtResult.setText(re.getMessage());
@@ -74,5 +101,15 @@ public class DizionarioController {
 		assert btnGeneraGrafo != null : "fx:id=\"btnGeneraGrafo\" was not injected: check your FXML file 'Dizionario.fxml'.";
 		assert btnTrovaVicini != null : "fx:id=\"btnTrovaVicini\" was not injected: check your FXML file 'Dizionario.fxml'.";
 		assert btnTrovaGradoMax != null : "fx:id=\"btnTrovaTutti\" was not injected: check your FXML file 'Dizionario.fxml'.";
+		assert btnTrovaTuttiVicini != null : "fx:id=\"btnTrovaTuttiVicini\" was not injected: check your FXML file 'Dizionario.fxml'."; 
 	}
+	
+	Model model;
+
+	public void setModel(Model model) {
+		this.model = model;
+	}
+	
+	
+	
 }

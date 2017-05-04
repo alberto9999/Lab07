@@ -13,10 +13,16 @@ public class TestModel {
 		List<String> vicini = model.displayNeighbours("casa");
 		System.out.println("Vicini di casa: " + vicini);
 		
+	
 		System.out.println();
 		
-		System.out.println("Cerco il vertice con grado massimo...");
-		System.out.println(model.findMaxDegree());
+	//	System.out.println("Cerco il vertice con grado massimo...");
+	//	System.out.println(model.findMaxDegree());
+		
+		
+		System.out.println(model.trovaTuttiVicini("casa"));
+		System.out.println(model.trovaTuttiVicini("casa").size());
+		
 	}
 
 }
